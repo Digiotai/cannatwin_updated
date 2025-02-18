@@ -39,7 +39,7 @@ def loginPage(request):
         #     return JsonResponse({"status": "error", "message": "Invalid email or password"}, status=401)
 
         # Authenticate the user using the username (retrieved from the email) and password
-        user = authenticate(request, username=username, password=password)
+        user = authenticate( username=username, password=password)
 
         if user is not None:
             # Log the user in
@@ -67,7 +67,7 @@ def registerPage(request):
             if form.is_valid():
                 form.save()
                 user_name = request.POST.get('username')
-                password1 = request.POST.get('password1')
+                password1 = request.POST.get('password')
                 # password2 = request.POST.get('password')
                 first_name = request.POST.get('first_name')
                 last_name = request.POST.get('last_name')

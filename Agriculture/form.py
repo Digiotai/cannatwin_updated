@@ -16,16 +16,25 @@ class PlaceholderMixin:
             print(e)
 
 
-class CreateUserForm(PlaceholderMixin, UserCreationForm):
+class CreateUserForm(PlaceholderMixin, ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         try:
             model = User
 
-            fields = ['username', 'email', 'password1']
-            exclude = ('password2',)
+            fields = ['username', 'email', 'password']
+            # exclude = ('password1','password2')
         except Exception as e:
             print(e)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields.pop("password2", None)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields.pop("password1", None)
+    #     self.fields.pop("password2", None)
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])  # Hash the password
+        if commit:
+            user.save()
+        return user
